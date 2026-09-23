@@ -1,170 +1,78 @@
-import java.util.Objects;
-
 public class Player {
-    // Encapsulated state
+
+    // INSTANCE VARIABLES GO HERE - DEFINE THE STATE OF EACH Player OBJECT
+    // private ENFORCES ENCAPSULATION - VALUES CAN ONLY BE MODIFIED BY MODIFYING
+    // INTERNAL VALUES DIRECTLY
+
     private String name;
-    private int maxHp;
-    private int currentHp;
-    private int attackPower;
-    private int gold;
+    private String race;
+    private Statistics stats;
 
-    // ==========================================
-    // CONSTRUCTORS
-    // ==========================================
+    // DEFAULT/NO-ARGUMENT CONSTRUCTOR
+    // INITIALIZES INSTANCE VARIABLES TO BASE VALUES
+    // INSTANTIATES A DEFAULT Statistics OBJECT TO AVOID NULL POINTER EXCEPTION
 
-    /**
-     * Full parameterized constructor.
-     * Sets all fields directly with boundary validation.
-     */
-    public Player(String name, int maxHp, int currentHp, int attackPower, int gold) {
-        this.name = (name == null || name.isBlank()) ? "Default" : name.trim();
-        this.maxHp = Math.max(1, maxHp);
-        // Clamp current HP between 0 and maxHp
-        this.currentHp = Math.clamp(currentHp, 0, this.maxHp);
-        this.attackPower = Math.max(0, attackPower);
-        this.gold = Math.max(0, gold);
-    }
-
-    /**
-     * Standard constructor: sets currentHp equal to maxHp, starting gold to 0.
-     * Chains to the full constructor using this(...).
-     */
-    public Player(String name, int maxHp, int attackPower) {
-        this(name, maxHp, maxHp, attackPower, 0);
-    }
-
-    /**
-     * Minimal constructor: uses default RPG base stats.
-     * Chains to the 3-parameter constructor.
-     */
-    public Player(String name) {
-        this(name, 100, 15);
-    }
-
-    /**
-     * Default no-argument constructor: fully default character.
-     */
     public Player() {
-        this("Adventurer");
+        this.name = "Default";
+        this.race = "Default";
+        this.stats = new Statistics();
     }
 
-    /**
-     * Copy constructor: creates a fresh, independent clone of an existing Player.
-     */
-    public Player(Player other) {
-        this(other.name, other.maxHp, other.currentHp, other.attackPower, other.gold);
+    // CONSTRUCTOR PARAMETERS
+
+    public Player(String name, String race, Statistics stats) {
+        this.name = name;
+        this.race = race;
+        this.stats = stats;
     }
 
-    // ==========================================
-    // GETTERS & SETTERS
-    // ==========================================
+    // getName GETTER
 
     public String getName() {
         return name;
     }
 
+    // getRACE GETTER
+
+    public String getRace() {
+        return race;
+    }
+
+    // getSTATS GETTER
+
+    public Statistics getStats() {
+        return stats;
+    }
+
+    // setName SETTER
+
     public void setName(String name) {
-        if (name != null && !name.isBlank()) {
-            this.name = name.trim();
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
         }
     }
 
-    public int getMaxHp() {
-        return maxHp;
-    }
+    // setRace SETTER
 
-    public void setMaxHp(int maxHp) {
-        this.maxHp = Math.max(1, maxHp);
-        // Ensure current HP does not exceed new maximum
-        if (this.currentHp > this.maxHp) {
-            this.currentHp = this.maxHp;
+    public void setRace(String race) {
+        if (race != null && !race.trim().isEmpty()) {
+            this.race = race;
         }
     }
 
-    public int getCurrentHp() {
-        return currentHp;
+    // setStats SETTER
+
+    public void setStats(Statistics stats) {
+        this.stats = stats;
     }
 
-    public void setCurrentHp(int currentHp) {
-        // Enforce valid HP boundaries: [0, maxHp]
-        this.currentHp = Math.clamp(currentHp, 0, this.maxHp);
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = Math.max(0, attackPower);
-    }
-
-    public int getGold() {
-        return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = Math.max(0, gold);
-    }
-
-    // ==========================================
-    // DOMAIN & CONVENIENCE METHODS
-    // ==========================================
-
-    public void takeDamage(int damage) {
-        if (damage > 0) {
-            setCurrentHp(this.currentHp - damage);
-        }
-    }
-
-    public void heal(int amount) {
-        if (amount > 0) {
-            setCurrentHp(this.currentHp + amount);
-        }
-    }
-
-    public void addGold(int amount) {
-        if (amount > 0) {
-            this.gold += amount;
-        }
-    }
-
-    public boolean spendGold(int amount) {
-        if (amount > 0 && this.gold >= amount) {
-            this.gold -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isAlive() {
-        return this.currentHp > 0;
-    }
-
-    // ==========================================
-    // STANDARD OVERRIDES (toString, equals, hashCode)
-    // ==========================================
+    // toString() OVERRIDE
 
     @Override
     public String toString() {
-        return String.format(
-                "Player[name='%s', HP=%d/%d, attackPower=%d, gold=%d]",
-                name, currentHp, maxHp, attackPower, gold
-        );
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Player other)) return false;
-        return maxHp == other.maxHp &&
-                currentHp == other.currentHp &&
-                attackPower == other.attackPower &&
-                gold == other.gold &&
-                Objects.equals(name, other.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, maxHp, currentHp, attackPower, gold);
+        return "Player Info: \n" +
+                "name: " + name + "\n" +
+                "race: " + race + "\n" +
+                "statistics: " + stats;
     }
 }
