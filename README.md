@@ -9,6 +9,7 @@ Designed and developed by **Peyton Holland** as an ongoing portfolio project.
 ## Current Features (Early Stages)
 
 - 9/16/26 - Work on project begins. Establishing early stage character rolling.
+- 9/23/26 - Continued work on Player and Statistics classes, finished character rolling functionality.
 
 ## Project Structure
 
